@@ -8,7 +8,7 @@ repo to demo kubestellar transport implementation
 1. git
 1. kubectl
 
-❗ Pay attention that the following instructions clones repos from git. In order to avoid overriding your work, please run the steps on a clean directory and do a cleanup once done.
+❗ Pay attention that the following instructions clone repos from git. In order to avoid overriding your work, please run the steps on a clean directory and do a cleanup once done.
 
 ## Setup the Space-Framework
 1. Deploy kind cluster to host space-management using the following command:
