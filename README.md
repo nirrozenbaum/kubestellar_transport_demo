@@ -21,7 +21,7 @@ bash <(curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/main/sp
 export KUBECONFIG=$HOME/.kube/config 
 ```
 
-3. Build Space-Manamgenet:
+3. Build Space-Managmenet:
 ```
 git clone git@github.com:kubestellar/kubestellar.git
 cd kubestellar/space-framework
@@ -31,7 +31,6 @@ cd ../../
 
 4. Run Space-Management in the kind cluster:
 ```
-# Assuming you are already in the space-framework directory
 kubectl apply -f kubestellar/space-framework/config/crds
 kubestellar/space-framework/bin/space-manager --context kind-sm-mgt &> /tmp/space-manager.log &
 ```
