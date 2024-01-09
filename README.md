@@ -21,7 +21,7 @@ bash <(curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/main/sp
 export KUBECONFIG=$HOME/.kube/config 
 ```
 
-3. Build Space-Managmenet:
+3. Build Space-Managment:
 ```
 git clone git@github.com:kubestellar/kubestellar.git
 cd kubestellar/space-framework
