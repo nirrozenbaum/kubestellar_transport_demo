@@ -8,9 +8,10 @@ repo to demo kubestellar transport implementation
 1. git
 1. kubectl
 
+❗ Pay attention that the following instructions clones repos from git. In order to avoid overriding your work, please run the steps on a clean directory and do a cleanup once done.
 
-## Setup the env
-1. Deploy kind cluster using the following command:
+## Setup the Space-Framework
+1. Deploy kind cluster to host space-management using the following command:
 ```
 bash <(curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/main/space-framework/test/example/create_kind_cluster.sh)
 ```
@@ -28,7 +29,7 @@ make
 cd ../../
 ```
 
-4. Run Space-Management:
+4. Run Space-Management in the kind cluster:
 ```
 # Assuming you are already in the space-framework directory
 kubectl apply -f kubestellar/space-framework/config/crds
