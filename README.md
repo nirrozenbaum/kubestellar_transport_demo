@@ -60,3 +60,17 @@ kubectl get spaces -A
 ```
 kubectl wait --for=jsonpath='{.status.Phase}'=Ready space/kfspace -n spaceprovider-kf --timeout=90s
 ```
+
+## Teardown
+1. Delete KubeFlex related resources
+```
+kubectl delete cps --all
+kubectl delete pvc data-postgres-postgresql-0
+kubectl delete ns kubeflex-system
+```
+
+2. Delete Space-Management and hosting kind cluster
+```
+pkill -f space-manager
+kind delete cluster --name sm-mgt
+```
