@@ -1,0 +1,23 @@
+apiVersion: edge.kubestellar.io/v2alpha1
+kind: PlacementDecision
+metadata:
+  name: my-first-placementdecision
+spec:
+  destinations:
+    - namespace: cluster1
+  workload:
+    namespaceScope:
+      - apiVersion: v1
+        group: apps
+        resource: deployments
+        objectsByNamespace:
+          - namespace: default
+            names:
+            - nginx-deployment
+      - apiVersion: v1
+        group: ""
+        resource: serviceaccounts
+        objectsByNamespace:
+          - namespace: default
+            names:
+            - my-sa
