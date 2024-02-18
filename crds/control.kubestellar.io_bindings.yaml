@@ -5,24 +5,24 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: placementdecisions.edge.kubestellar.io
+  name: bindings.control.kubestellar.io
 spec:
-  group: edge.kubestellar.io
+  group: control.kubestellar.io
   names:
-    kind: PlacementDecision
-    listKind: PlacementDecisionList
-    plural: placementdecisions
+    kind: Binding
+    listKind: BindingList
+    plural: bindings
     shortNames:
-    - pd
-    singular: placementdecision
+    - bdg
+    singular: binding
   scope: Cluster
   versions:
-  - name: v2alpha1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PlacementDecision is mapped 1:1 to a single Placement resource.
-          The decision resource reflects the resolution of the Placement's selectors,
-          and explicitly reflects which resources should go to what destinations.
+        description: Binding is mapped 1:1 to a single BindingPolicy object. Binding
+          reflects the resolution of the BindingPolicy's selectors, and explicitly
+          reflects which objects should go to what destinations.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -38,23 +38,23 @@ spec:
             type: object
           spec:
             description: '`spec` explicitly describes a desired binding between workloads
-              and Locations. It reflects the resolution of a Placement''s selectors.'
+              and Locations. It reflects the resolution of a BindingPolicy''s selectors.'
             properties:
               destinations:
                 description: '`destinations` is a list of cluster-identifiers that
-                  the resources should be propagated to.'
+                  the objects should be propagated to.'
                 items:
                   description: Destination wraps the identifiers required to uniquely
                     identify a destination cluster.
                   properties:
-                    namespace:
+                    clusterId:
                       type: string
                   type: object
                 type: array
               workload:
-                description: '`Workload` is a collection of namespaced-scoped resources
-                  and a collection of cluster-scoped resources to be propagated to
-                  destination clusters.'
+                description: '`Workload` is a collection of namespaced-scoped objects
+                  and a collection of cluster-scoped objects to be propagated to destination
+                  clusters.'
                 properties:
                   clusterScope:
                     description: '`clusterScope` holds a list of individual cluster-scoped
@@ -63,25 +63,22 @@ spec:
                       object.'
                     items:
                       properties:
-                        apiVersion:
-                          description: '`apiVeresion` holds just the version, not
-                            the group too. This is the version to use both upstream
-                            and downstream.'
-                          type: string
                         group:
                           type: string
-                        objects:
-                          description: '`objects` holds the names of the objects of
-                            this kind to downsync. Empty list means none of them.'
+                        objectNames:
+                          description: '`objectNames` holds the names of the objects
+                            of this kind to downsync. Empty list means none of them.'
                           items:
                             type: string
                           type: array
                         resource:
                           type: string
+                        version:
+                          type: string
                       required:
-                      - apiVersion
                       - group
                       - resource
+                      - version
                       type: object
                     type: array
                   namespaceScope:
@@ -89,13 +86,8 @@ spec:
                       one member matches.'
                     items:
                       description: NamespaceScopeDownsyncObjects matches some objects
-                        of one particular namespaced resource.
+                        of one particular namespaced object.
                       properties:
-                        apiVersion:
-                          description: '`apiVeresion` holds just the version, not
-                            the group too. This is the version to use both upstream
-                            and downstream.'
-                          type: string
                         group:
                           type: string
                         objectsByNamespace:
@@ -123,28 +115,26 @@ spec:
                           type: array
                         resource:
                           type: string
+                        version:
+                          type: string
                       required:
-                      - apiVersion
                       - group
                       - resource
+                      - version
                       type: object
                     type: array
+                  workloadGeneration:
+                    description: '`WorkloadGeneration` is a sequence number representing
+                      a specific generation of the workload objects to be downsynced.
+                      For example, if ClusterScope and NamespaceScope lists haven''t
+                      changed but at least one object has changed, this field should
+                      be incremented. Upon a change in any of workload objects that
+                      should be distributed (e.g., spec, annotations or labels) the
+                      workload generation field should be incremented. `WorkloadGeneration`
+                      field is monotonically increasing.'
+                    format: int64
+                    type: integer
                 type: object
-            type: object
-          status:
-            description: '`status` describes the status of the process of binding
-              workloads to Locations.'
-            properties:
-              propagatedWorkloadsCount:
-                description: '`propagatedWorkloadsCount` is the number of destinations
-                  that received all the resources in the `spec.workload`.'
-                type: integer
-              specGeneration:
-                description: '`specGeneration` identifies the generation of the spec
-                  that this is the status for. Zero means that no status has yet been
-                  written here.'
-                format: int32
-                type: integer
             type: object
         type: object
     served: true

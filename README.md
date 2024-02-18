@@ -7,70 +7,31 @@ repo to demo kubestellar transport implementation
 1. kind
 1. git
 1. kubectl
+1. clusteradm
+
+
+## Prepare the environment 
 
 ❗ Pay attention that the following instructions clone repos from git. In order to avoid overriding your work, please run the steps on a clean directory and do a cleanup once done.
 
-## Setup the Space-Framework
-1. Deploy kind cluster to host space-management using the following command:
+1. Create a sub-directory for storing kubeconfig files of the different clusters:
 ```
-bash <(curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/main/space-framework/test/example/create_kind_cluster.sh)
+MY_KUBECONFIGS=${PWD}/my-kubeconfigs
+rm -rf "$MY_KUBECONFIGS"
+mkdir -p "$MY_KUBECONFIGS"
+
 ```
 
-2. Set KUBECONFIG as follows:
-```
-export KUBECONFIG=$HOME/.kube/config 
-```
+## Deploy Kubestellar
 
-3. Build Space-Managment:
-```
-git clone git@github.com:kubestellar/kubestellar.git
-cd kubestellar/space-framework
-make 
-cd ../../
-```
+### Deploy WECs
 
-4. Run Space-Management in the kind cluster:
-```
-kubectl apply -f kubestellar/space-framework/config/crds
-kubestellar/space-framework/bin/space-manager --context kind-sm-mgt &> /tmp/space-manager.log &
-```
+1.  Deploy ocm hub and two edge clusters:
+    ```
+    ./setup_local_ocm.sh 
+    ```
 
-5. Install KubeFlex Space-Provider:
-```
-git clone git@github.com:kubestellar/kubeflex.git
-cd kubeflex
-make
-cd ..
-kubeflex/bin/kflex init
-```
-
-6. Create KubeFlex secrets and service provider object:
-```
-kubectl create secret generic kfsec --from-file=kubeconfig=$HOME/.kube/config
-kubectl apply -f "https://raw.githubusercontent.com/kubestellar/kubestellar/main/space-framework/test/example/kf-provider.yaml"
-```
-
-7. Deploy a test space and verify your space created successfully:
-```
-kubectl apply -f "https://raw.githubusercontent.com/kubestellar/kubestellar/main/space-framework/test/example/kf-space.yaml"
-kubectl get spaces -A
-```
-
-8. Wait until your space is ready for use:
-```
-kubectl wait --for=jsonpath='{.status.Phase}'=Ready space/kfspace -n spaceprovider-kf --timeout=90s
-```
-
-## Teardown
-1. Delete KubeFlex related resources
-```
-kubectl delete cps --all
-kubectl delete pvc data-postgres-postgresql-0
-kubectl delete ns kubeflex-system
-```
-
-2. Delete Space-Management and hosting kind cluster
-```
-pkill -f space-manager
-kind delete cluster --name sm-mgt
-```
+1.  Deploy wds:
+    ```
+    ./setup_wds.sh
+    ```

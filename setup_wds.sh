@@ -13,5 +13,6 @@ export KUBECONFIG="${MY_KUBECONFIGS}/${wds}"
 echo "Create Kind cluster for WDS\n"
 kind create cluster --name "${wds}"
 
-echo "Apply PlacementDecision CRD in WDS\n"
-kubectl apply -f crds/edge.kubestellar.io_placementdecisions.yaml
+echo "Apply CRDs in WDS\n"
+kubectl apply -f crds/controler.kubestellar.bindingpolicies.yaml
+kubectl apply -f crds/controler.kubestellar.bindings.yaml
