@@ -13,8 +13,7 @@ c1ctx="kind-${c1}"
 c2ctx="kind-${c2}"
 
 MY_KUBECONFIGS="kubeconfigs"
-rm -rf ${MY_KUBECONFIGS}
-mkdir ${MY_KUBECONFIGS}
+
 export KUBECONFIG="${MY_KUBECONFIGS}/${hub}"
 kind create cluster --name "${hub}"
 export KUBECONFIG="${MY_KUBECONFIGS}/${c1}"

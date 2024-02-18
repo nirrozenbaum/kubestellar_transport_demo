@@ -12,11 +12,11 @@ repo to demo kubestellar transport implementation
 
 ## Prepare the environment 
 
-❗ Pay attention that the following instructions clone repos from git. In order to avoid overriding your work, please run the steps on a clean directory and do a cleanup once done.
+❗ Pay attention that the following instructions clone repos from git and remove the content of the dir `kubeconfigs`. In order to avoid overriding your work, please run the steps on a clean directory and do a cleanup once done.
 
 1. Create a sub-directory for storing kubeconfig files of the different clusters:
 ```
-MY_KUBECONFIGS=${PWD}/my-kubeconfigs
+MY_KUBECONFIGS=${PWD}/kubeconfigs
 rm -rf "$MY_KUBECONFIGS"
 mkdir -p "$MY_KUBECONFIGS"
 
